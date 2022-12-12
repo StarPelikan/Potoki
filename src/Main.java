@@ -13,11 +13,16 @@ public class Main {
 
 
         Basket basket = new Basket(fruits, prices);
-        File basketFile = new File("basket.txt");
-        if (basketFile.exists()) {
+        File logFile = new File("log.csv");
+        File basketFile = new File("basket.bin");
+        File jsonFile = new File("basket.json");
+
+        ClientLog clientLog = new ClientLog();
+
+        if (jsonFile.exists()) {
             System.out.println("загрузить вашу корзину?");
             scanner.nextLine().equals("");
-            basket = Basket.loadFromTxtFile(basketFile);
+            basket = Basket.loadFromJson(jsonFile);
             basket.printCart();
             System.out.println(" ");
         } else {
@@ -60,11 +65,16 @@ public class Main {
                 System.out.println("ЭЭЭ, товарищ количество продуктов не может быть отрицательным.");
                 continue;
             }
+
+
             basket.addToCart(fruitNumber, productCount);
-            basket.saveTxt(basketFile);
+            basket.saveJson(jsonFile);
+            clientLog.log(fruitNumber, productCount);
+            clientLog.exportAsCSV(logFile);
             basket.printCart();
 
         }
 
     }
+
 }
