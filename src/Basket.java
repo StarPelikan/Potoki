@@ -1,9 +1,8 @@
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import java.text.ParseException;
+
 import java.io.*;
 
-import static java.lang.Integer.parseInt;
 
 public class Basket {
     protected String[] fruitName;
@@ -38,6 +37,8 @@ public class Basket {
         }
         System.out.println("Итого в корзине: " + sumFruit + " рублей.");
     }
+
+    //В json
     public void saveJson(File textFile) throws IOException {
         FileWriter writer = new FileWriter(textFile);
         GsonBuilder builder = new GsonBuilder();
@@ -46,55 +47,53 @@ public class Basket {
         writer.close();
     }
 
-    public static Basket loadFromJson (File textFile) throws FileNotFoundException{
+    public static Basket loadFromJson(File textFile) throws IOException {
         Gson gson = new Gson();
         FileReader reader = new FileReader(textFile);
         return gson.fromJson(reader, Basket.class);
     }
 
-//    public void saveTxt(File textFile) throws IOException {
-//        try (PrintWriter out = new PrintWriter(textFile)) {
-//            for (String st : fruitName) {
-//                out.write(st + ",");
-//            }
-//            out.write("\n");
-//            for (int pr : price) {
-//                out.write(pr + ",");
-//            }
-//            out.write("\n");
-//            for (int amount : fruitAmount) {
-//                out.write(amount + ",");
-//            }
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-//
-//    public static Basket loadFromTxtFile(File textFile) {
-//        try (BufferedReader br = new BufferedReader(new FileReader(textFile))) {
-//            String fruitName = br.readLine();
-//            String price = br.readLine();
-//            String fruitAmount = br.readLine();
-//
-//            String[] fruitStr = fruitName.split(",");
-//
-//            String[] priceStr = price.split(",");
-//            int[] pricesInt = new int[priceStr.length];
-//            for (int i = 0; i < pricesInt.length; i++) {
-//                pricesInt[i] = Integer.parseInt(priceStr[i]);
-//            }
-//
-//            String[] amountStr = fruitAmount.split(",");
-//            int[] amountInt = new int[amountStr.length];
-//            for (int i = 0; i < amountInt.length; i++) {
-//                amountInt[i] = Integer.parseInt(amountStr[i]);
-//            }
-//            return new Basket(fruitStr, pricesInt, amountInt);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+    //В Text
+    public void saveTxt(File textFile) throws IOException {
+        try (PrintWriter out = new PrintWriter(textFile)) {
+            for (String st : fruitName) {
+                out.write(st + ",");
+            }
+            out.write("\n");
+            for (int pr : price) {
+                out.write(pr + ",");
+            }
+            out.write("\n");
+            for (int amount : fruitAmount) {
+                out.write(amount + ",");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Basket loadFromTxtFile(File textFile) {
+        try (BufferedReader br = new BufferedReader(new FileReader(textFile))) {
+            String fruitName = br.readLine();
+            String price = br.readLine();
+            String fruitAmount = br.readLine();
+
+            String[] fruitStr = fruitName.split(",");
+
+            String[] priceStr = price.split(",");
+            int[] pricesInt = new int[priceStr.length];
+            for (int i = 0; i < pricesInt.length; i++) {
+                pricesInt[i] = Integer.parseInt(priceStr[i]);
+            }
+
+            String[] amountStr = fruitAmount.split(",");
+            int[] amountInt = new int[amountStr.length];
+            for (int i = 0; i < amountInt.length; i++) {
+                amountInt[i] = Integer.parseInt(amountStr[i]);
+            }
+            return new Basket(fruitStr, pricesInt, amountInt);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
-
-
-
